@@ -34,7 +34,12 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       expiresAt: new Date(Date.now() + 7 * 24 * 3600 * 1000),
     });
 
-    res.json({ accessToken, refreshToken });
+    res.json({
+      accessToken,
+      refreshToken,
+      mustResetPassword: admin.mustResetPassword,
+    });
+
   } catch (err) {
     logger.error("Login error: " + (err as Error).message);
     next(err);
@@ -60,6 +65,31 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
     res.json({ accessToken: newAccessToken });
   } catch (err) {
     logger.error("Refresh error: " + (err as Error).message);
+    next(err);
+  }
+};
+export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { password } = req.body;
+    const adminId = (req as any).user?.id;
+
+    if (!adminId) return res.status(401).json({ message: "Unauthorized" });
+    if (!password || password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+    const admin = await Admin.findById(adminId);
+    if (!admin) return res.status(404).json({ message: "Admin not found" });
+
+    admin.password = hashed;
+    admin.mustResetPassword = false; // ✅ bỏ bắt buộc đổi pass
+    admin.tokenVersion = (admin.tokenVersion ?? 0) + 1; // ✅ vô hiệu hóa token cũ
+    await admin.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (err) {
+    logger.error("Change password error: " + (err as Error).message);
     next(err);
   }
 };

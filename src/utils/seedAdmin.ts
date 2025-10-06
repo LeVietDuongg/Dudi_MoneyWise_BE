@@ -17,7 +17,7 @@ const seedAdmin = async () => {
   }
 
   const hashed = await bcrypt.hash(ADMIN_PASSWORD, Number(SALT_ROUNDS ?? 10));
-  await Admin.create({ email: ADMIN_EMAIL, password: hashed, name: ADMIN_NAME });
+  await Admin.create({ email: ADMIN_EMAIL, password: hashed, name: ADMIN_NAME, mustResetPassword:true });
 
   logger.info("✅ Admin account created");
 
