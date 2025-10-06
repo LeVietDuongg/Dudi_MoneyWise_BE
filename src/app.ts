@@ -6,6 +6,8 @@ import rateLimit from "express-rate-limit";
 
 import { connectDB } from "./config/database.js";
 import authRoutes from "./routes/auth.routes.js";
+import topicRoutes from "./routes/topic.routes.js";
+import postRoutes from "./routes/post.routes.js";
 import  seedAdmin  from "./utils/seedAdmin.js";
 import logger from "./utils/logger.js";
 
@@ -30,7 +32,8 @@ app.use(express.json());
 
 // routes
 app.use("/api/auth", authRoutes);
-
+app.use("/api/topics", topicRoutes);
+app.use("/api/posts", postRoutes);
 // error handlers...
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   logger.error("Unhandled error: " + (err as Error).message);
