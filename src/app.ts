@@ -8,6 +8,8 @@ import { connectDB } from "./config/database.js";
 import authRoutes from "./routes/auth.routes.js";
 import topicRoutes from "./routes/topic.routes.js";
 import postRoutes from "./routes/post.routes.js";
+import serviceRoutes from "./routes/service.routes.js"
+import serviceCategoryRoutes from "./routes/serviceCategory.routes.js"
 import  seedAdmin  from "./utils/seedAdmin.js";
 import logger from "./utils/logger.js";
 
@@ -34,6 +36,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/topics", topicRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/services", serviceRoutes);
+app.use("/api/service-categories", serviceCategoryRoutes);
 // error handlers...
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   logger.error("Unhandled error: " + (err as Error).message);
