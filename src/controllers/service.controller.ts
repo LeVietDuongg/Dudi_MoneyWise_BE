@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import Service from "../models/Service.model.js";
 import { cloudinary } from "../config/cloudinary.js";
 
-// ✅ Helper: Lấy public_id từ Cloudinary URL
 const getPublicIdFromUrl = (url: string): string | null => {
   try {
     const parts = url.split("/");
@@ -14,25 +13,22 @@ const getPublicIdFromUrl = (url: string): string | null => {
   }
 };
 
-// ✅ Create service (upload ảnh mới)
+// ✅ Create service (upload icon + image)
 export const createService = async (req: Request, res: Response) => {
   try {
-    console.log("🟡 [CreateService] Body:", req.body);
-    console.log("🟡 [CreateService] File:", req.file);
-
-    const { title, description, content, category } = req.body;
-
-    if (!title || !description || !category) {
+    const { title, description, content } = req.body;
+    if (!title || !description) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const imageUrl = (req.file as any)?.path || null;
+    const iconUrl = (req.files as any)?.icon?.[0]?.path || null;
+    const imageUrl = (req.files as any)?.image?.[0]?.path || null;
 
     const service = new Service({
       title,
       description,
       content,
-      category,
+      icon: iconUrl,
       image: imageUrl,
     });
 
@@ -44,23 +40,20 @@ export const createService = async (req: Request, res: Response) => {
   }
 };
 
-
 // ✅ Get all services
 export const getAllServices = async (_req: Request, res: Response) => {
   try {
-    const services = await Service.find()
-      .populate("category")
-      .sort({ createdAt: -1 });
+    const services = await Service.find({}, "title description icon image").sort({ createdAt: -1 });
     res.json({ services });
   } catch (err: any) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// ✅ Get by ID
+// ✅ Get service by ID
 export const getServiceById = async (req: Request, res: Response) => {
   try {
-    const service = await Service.findById(req.params.id).populate("category");
+    const service = await Service.findById(req.params.id);
     if (!service) return res.status(404).json({ message: "Service not found" });
     res.json({ service });
   } catch (err: any) {
@@ -68,25 +61,29 @@ export const getServiceById = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Update service (xóa ảnh cũ nếu có ảnh mới)
+// ✅ Update service
 export const updateService = async (req: Request, res: Response) => {
   try {
     const service = await Service.findById(req.params.id);
     if (!service) return res.status(404).json({ message: "Service not found" });
 
-    // Nếu có ảnh mới → xóa ảnh cũ trên Cloudinary
-    if (req.file && service.image) {
+    // Cập nhật icon
+    if ((req.files as any)?.icon?.[0] && service.icon) {
+      const publicId = getPublicIdFromUrl(service.icon);
+      if (publicId) await cloudinary.uploader.destroy(publicId);
+      service.icon = (req.files as any).icon[0].path;
+    }
+
+    // Cập nhật image
+    if ((req.files as any)?.image?.[0] && service.image) {
       const publicId = getPublicIdFromUrl(service.image);
-      if (publicId) {
-        await cloudinary.uploader.destroy(publicId);
-      }
-      service.image = (req.file as any).path;
+      if (publicId) await cloudinary.uploader.destroy(publicId);
+      service.image = (req.files as any).image[0].path;
     }
 
     service.title = req.body.title ?? service.title;
     service.description = req.body.description ?? service.description;
     service.content = req.body.content ?? service.content;
-    service.category = req.body.category ?? service.category;
 
     await service.save();
     res.json({ message: "Service updated", service });
@@ -95,42 +92,23 @@ export const updateService = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Delete service (xóa ảnh Cloudinary)
+// ✅ Delete service
 export const deleteService = async (req: Request, res: Response) => {
   try {
     const service = await Service.findById(req.params.id);
     if (!service) return res.status(404).json({ message: "Service not found" });
 
-    // Xóa ảnh Cloudinary nếu có
-    if (service.image) {
-      const publicId = getPublicIdFromUrl(service.image);
-      if (publicId) {
-        await cloudinary.uploader.destroy(publicId);
+    for (const field of ["icon", "image"]) {
+      const url = (service as any)[field];
+      if (url) {
+        const publicId = getPublicIdFromUrl(url);
+        if (publicId) await cloudinary.uploader.destroy(publicId);
       }
     }
 
     await service.deleteOne();
     res.json({ message: "Service deleted" });
   } catch (err: any) {
-    res.status(500).json({ message: err.message });
-  }
-};
-// ✅ Get services by category
-export const getServicesByCategory = async (req: Request, res: Response) => {
-  try {
-    const { categoryId } = req.params;
-
-    if (!categoryId) {
-      return res.status(400).json({ message: "Missing category ID" });
-    }
-
-    const services = await Service.find({ category: categoryId })
-      .populate("category")
-      .sort({ createdAt: -1 });
-
-    res.json({ services });
-  } catch (err: any) {
-    console.error("❌ [GetByCategory] Error:", err);
     res.status(500).json({ message: err.message });
   }
 };

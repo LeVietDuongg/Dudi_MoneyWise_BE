@@ -10,7 +10,7 @@ import authRoutes from "./routes/auth.routes.js";
 import topicRoutes from "./routes/topic.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import serviceRoutes from "./routes/service.routes.js";
-import serviceCategoryRoutes from "./routes/serviceCategory.routes.js";
+
 import seedAdmin from "./utils/seedAdmin.js";
 import logger from "./utils/logger.js";
 
@@ -46,7 +46,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/topics", topicRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/services", serviceRoutes);
-app.use("/api/service-categories", serviceCategoryRoutes);
 
 // ✅ Error handler có type rõ ràng
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

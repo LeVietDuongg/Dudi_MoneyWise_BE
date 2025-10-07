@@ -1,11 +1,11 @@
-import { Schema, model, Document, Types } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
 export interface IService extends Document {
   title: string;
   description: string;
   content?: string;
-  image?: string;
-  category?: Types.ObjectId;
+  image?: string; // ảnh banner
+  icon?: string;  // icon hiển thị ở trang ngoài
 }
 
 const ServiceSchema = new Schema<IService>(
@@ -14,7 +14,7 @@ const ServiceSchema = new Schema<IService>(
     description: { type: String, required: true },
     content: { type: String },
     image: { type: String },
-    category: { type: Schema.Types.ObjectId, ref: "ServiceCategory" },
+    icon: { type: String },
   },
   { timestamps: true }
 );
