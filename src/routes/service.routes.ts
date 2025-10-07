@@ -6,13 +6,23 @@ import {
   updateService,
   deleteService,
 } from "../controllers/service.controller.js";
+import { upload } from "../middlewares/upload.middleware.js";
 
 const router = express.Router();
 
-router.post("/", createService);
+// ✅ POST /api/services
+router.post("/", upload.single("image"), createService);
+
+// ✅ GET /api/services
 router.get("/", getAllServices);
+
+// ✅ GET /api/services/:id
 router.get("/:id", getServiceById);
-router.put("/:id", updateService);
+
+// ✅ PUT /api/services/:id
+router.put("/:id", upload.single("image"), updateService);
+
+// ✅ DELETE /api/services/:id
 router.delete("/:id", deleteService);
 
 export default router;
