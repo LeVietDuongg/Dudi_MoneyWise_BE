@@ -5,6 +5,7 @@ import {
   getServiceById,
   updateService,
   deleteService,
+  getServicesByCategory
 } from "../controllers/service.controller.js";
 import { upload } from "../middlewares/upload.middleware.js";
 
@@ -15,6 +16,8 @@ router.post("/", upload.single("image"), createService);
 
 // ✅ GET /api/services
 router.get("/", getAllServices);
+// ✅ 🆕 GET /api/services/category/:categoryId
+router.get("/category/:categoryId", getServicesByCategory);
 
 // ✅ GET /api/services/:id
 router.get("/:id", getServiceById);

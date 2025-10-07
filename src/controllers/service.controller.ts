@@ -115,3 +115,22 @@ export const deleteService = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
+// ✅ Get services by category
+export const getServicesByCategory = async (req: Request, res: Response) => {
+  try {
+    const { categoryId } = req.params;
+
+    if (!categoryId) {
+      return res.status(400).json({ message: "Missing category ID" });
+    }
+
+    const services = await Service.find({ category: categoryId })
+      .populate("category")
+      .sort({ createdAt: -1 });
+
+    res.json({ services });
+  } catch (err: any) {
+    console.error("❌ [GetByCategory] Error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
