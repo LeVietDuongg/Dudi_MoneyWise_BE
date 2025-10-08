@@ -1,7 +1,15 @@
 import type { Request, Response } from "express";
 import { Post } from "../models/Post.model.js";
 import { Topic } from "../models/Topic.model.js";
-
+// 🟢 Lấy tất cả bài viết
+export const getAllPosts = async (req: Request, res: Response) => {
+  try {
+    const posts = await Post.find().populate("topic");
+    res.json({ success: true, posts });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
 // 🟢 Lấy tất cả post theo topic slug
 export const getPostsByTopicSlug = async (req: Request, res: Response) => {
   try {

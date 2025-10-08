@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import  {Topic}  from "../models/Topic.model.js";
 import  {Post} from "../models/Post.model.js";
+import  slugify from "slugify";
+
 
 // 🟢 Lấy tất cả topic
 export const getAllTopics = async (req: Request, res: Response) => {
@@ -27,16 +29,35 @@ export const getTopicBySlug = async (req: Request, res: Response) => {
   }
 };
 
-// 🟢 Tạo topic
 export const createTopic = async (req: Request, res: Response) => {
   try {
-    const { slug, title, subtitle, banner } = req.body;
+    let { slug, title, subtitle, banner } = req.body;
+
+    // Kiểm tra title
+    if (!title || !title.trim()) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Title is required" });
+    }
+
+    // Tạo slug tự động nếu chưa có
+    if (!slug || !slug.trim()) {
+      // chú ý: slugify.default vì import * as slugify
+      slug = slugify.default(title, { lower: true, strict: true });
+    }
+
+    // Tạo topic mới
     const topic = await Topic.create({ slug, title, subtitle, banner });
-    res.status(201).json({ success: true, topic });
+
+    return res.status(201).json({ success: true, topic });
   } catch (err) {
-    res.status(400).json({ success: false, message: "Cannot create topic" });
+    console.error("Error creating topic:", err);
+    return res
+      .status(400)
+      .json({ success: false, message: "Cannot create topic" });
   }
 };
+
 
 // 🟡 Cập nhật topic
 export const updateTopic = async (req: Request, res: Response) => {

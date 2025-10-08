@@ -1,3 +1,4 @@
+// src/routes/topic.routes.ts
 import { Router } from "express";
 import {
   getAllTopics,
@@ -9,10 +10,10 @@ import {
 
 const router = Router();
 
-router.get("/", getAllTopics);
-router.get("/:slug", getTopicBySlug);
-router.post("/", createTopic);
-router.put("/:id", updateTopic);
-router.delete("/:id", deleteTopic);
+router.get("/", getAllTopics);           // ✅ Lấy tất cả topic
+router.get("/:slug", getTopicBySlug);    // ✅ Lấy topic + post
+router.post("/", createTopic);           // ✅ Tạo topic
+router.put("/:id", updateTopic);         // ✅ Cập nhật topic
+router.delete("/:id", deleteTopic);      // ✅ Xóa topic
 
 export default router;

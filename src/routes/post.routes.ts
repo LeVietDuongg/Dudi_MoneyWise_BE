@@ -1,5 +1,7 @@
+// src/routes/post.routes.ts
 import { Router } from "express";
 import {
+  getAllPosts,
   getPostsByTopicSlug,
   getPostById,
   createPost,
@@ -9,10 +11,11 @@ import {
 
 const router = Router();
 
-router.get("/topic/:slug", getPostsByTopicSlug);
-router.get("/:id", getPostById);
-router.post("/", createPost);
-router.put("/:id", updatePost);
-router.delete("/:id", deletePost);
+router.get("/", getAllPosts);                // ✅ Lấy tất cả
+router.get("/topic/:slug", getPostsByTopicSlug); // ✅ Lấy theo topic slug
+router.get("/:id", getPostById);             // ✅ Chi tiết post
+router.post("/", createPost);                // ✅ Tạo
+router.put("/:id", updatePost);              // ✅ Cập nhật
+router.delete("/:id", deletePost);           // ✅ Xóa
 
 export default router;
