@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/app.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1760086521068,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1760087318742,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,11 +46,23 @@\n \r\n app.use(helmet(helmetConfig));\r\n \r\n // ✅ CORS cấu hình chuẩn cho frontend dùng withCredentials\r\n+const allowedOrigins = [\r\n+  \"http://localhost:3000\",\r\n+  \"http://localhost:3001\", \r\n+  \"http://127.0.0.1:3000\",\r\n+];\r\n+\r\n app.use(\r\n   cors({\r\n-    origin: process.env.ADMIN_UI_ORIGIN || \"http://localhost:3000\",\r\n+    origin: (origin, callback) => {\r\n+      if (!origin || allowedOrigins.includes(origin)) {\r\n+        callback(null, true);\r\n+      } else {\r\n+        callback(new Error(\"Not allowed by CORS\"));\r\n+      }\r\n+    },\r\n     credentials: true,\r\n     methods: [\"GET\", \"POST\", \"PUT\", \"DELETE\", \"OPTIONS\"],\r\n     allowedHeaders: [\"Content-Type\", \"Authorization\"],\r\n   })\r\n"
+                }
+            ],
+            "date": 1760086521068,
+            "name": "Commit-0",
+            "content": "import express from \"express\";\r\nimport type  { Request, Response, NextFunction } from \"express\"\r\nimport dotenv from \"dotenv\";\r\nimport helmet from \"helmet\";\r\nimport cors from \"cors\";\r\nimport rateLimit from \"express-rate-limit\";\r\n\r\nimport { connectDB } from \"./config/database.js\";\r\nimport authRoutes from \"./routes/auth.routes.js\";\r\nimport topicRoutes from \"./routes/topic.routes.js\";\r\nimport postRoutes from \"./routes/post.routes.js\";\r\nimport serviceRoutes from \"./routes/service.routes.js\";\r\n\r\nimport seedAdmin from \"./utils/seedAdmin.js\";\r\nimport logger from \"./utils/logger.js\";\r\n\r\ndotenv.config();\r\n\r\nconst app = express();\r\n\r\nconst isDev = process.env.NODE_ENV !== \"production\";\r\n\r\n// Security middleware with relaxed CSP for dev to unblock asset loading\r\nconst helmetConfig = isDev\r\n  ? { contentSecurityPolicy: false }\r\n  : {\r\n      contentSecurityPolicy: {\r\n        directives: {\r\n          ...(helmet.contentSecurityPolicy?.getDefaultDirectives?.() ?? {}),\r\n          defaultSrc: [\"'self'\"],\r\n          imgSrc: [\r\n            \"'self'\",\r\n            \"data:\",\r\n            \"https://res.cloudinary.com\",\r\n            \"https://scr.vn\",\r\n            \"https://openend.vn\",\r\n            \"https://www.citd.vn\",\r\n          ],\r\n          connectSrc: [\r\n            \"'self'\",\r\n            process.env.ADMIN_UI_ORIGIN || \"http://localhost:3000\",\r\n          ],\r\n        },\r\n      },\r\n    };\r\n\r\napp.use(helmet(helmetConfig));\r\n\r\n// ✅ CORS cấu hình chuẩn cho frontend dùng withCredentials\r\napp.use(\r\n  cors({\r\n    origin: process.env.ADMIN_UI_ORIGIN || \"http://localhost:3000\",\r\n    credentials: true,\r\n    methods: [\"GET\", \"POST\", \"PUT\", \"DELETE\", \"OPTIONS\"],\r\n    allowedHeaders: [\"Content-Type\", \"Authorization\"],\r\n  })\r\n);\r\n\r\napp.use(express.json());\r\n\r\n// Rate limiter\r\napp.use(\r\n  rateLimit({\r\n    windowMs: 60 * 1000,\r\n    max: 200,\r\n  })\r\n);\r\n\r\n// Routes\r\napp.use(\"/api/auth\", authRoutes);\r\napp.use(\"/api/topics\", topicRoutes);\r\napp.use(\"/api/posts\", postRoutes);\r\napp.use(\"/api/services\", serviceRoutes);\r\n\r\n// ✅ Error handler có type rõ ràng\r\napp.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {\r\n  logger.error(\"Unhandled error: \" + (err.message || err));\r\n  res.status(500).json({ message: \"Server error\" });\r\n});\r\n\r\n// DB connect + seed admin\r\nconnectDB()\r\n  .then(() => seedAdmin())\r\n  .catch((err: Error) => logger.error(\"DB connect failed: \" + (err.message || err)));\r\n\r\nexport default app;\r\n"
+        }
+    ]
+}

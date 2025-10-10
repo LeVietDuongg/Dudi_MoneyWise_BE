@@ -18,13 +18,50 @@ dotenv.config();
 
 const app = express();
 
-// Security middleware
-app.use(helmet());
+const isDev = process.env.NODE_ENV !== "production";
+
+// Security middleware with relaxed CSP for dev to unblock asset loading
+const helmetConfig = isDev
+  ? { contentSecurityPolicy: false }
+  : {
+      contentSecurityPolicy: {
+        directives: {
+          ...(helmet.contentSecurityPolicy?.getDefaultDirectives?.() ?? {}),
+          defaultSrc: ["'self'"],
+          imgSrc: [
+            "'self'",
+            "data:",
+            "https://res.cloudinary.com",
+            "https://scr.vn",
+            "https://openend.vn",
+            "https://www.citd.vn",
+          ],
+          connectSrc: [
+            "'self'",
+            process.env.ADMIN_UI_ORIGIN || "http://localhost:3000",
+          ],
+        },
+      },
+    };
+
+app.use(helmet(helmetConfig));
 
 // ✅ CORS cấu hình chuẩn cho frontend dùng withCredentials
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001", 
+  "http://127.0.0.1:3000",
+];
+
 app.use(
   cors({
-    origin: process.env.ADMIN_UI_ORIGIN || "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
