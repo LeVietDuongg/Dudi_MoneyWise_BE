@@ -26,8 +26,9 @@ const helmetConfig = isDev
   : {
       contentSecurityPolicy: {
         directives: {
-          ...(helmet.contentSecurityPolicy?.getDefaultDirectives?.() ?? {}),
           defaultSrc: ["'self'"],
+          scriptSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
           imgSrc: [
             "'self'",
             "data:",
@@ -40,6 +41,10 @@ const helmetConfig = isDev
             "'self'",
             process.env.ADMIN_UI_ORIGIN || "http://localhost:3000",
           ],
+          fontSrc: ["'self'"],
+          objectSrc: ["'none'"],
+          mediaSrc: ["'self'"],
+          frameSrc: ["'none'"],
         },
       },
     };
