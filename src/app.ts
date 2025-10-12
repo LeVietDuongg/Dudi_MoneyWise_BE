@@ -37,7 +37,7 @@ const helmetConfig = isDev
             "https://openend.vn",
             "https://www.citd.vn",
             "https://cdn.tgdd.vn", // ✅ Cho phép ảnh từ TGDD
-            "https://*.tgdd.vn", // ✅ Cho phép tất cả subdomain của tgdd.vn
+            // ✅ Cho phép tất cả subdomain của tgdd.vn
           ],
           connectSrc: [
             "'self'",

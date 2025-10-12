@@ -1,0 +1,18 @@
+{
+    "sourceFile": "package.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1760201485066,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1760201485066,
+            "name": "Commit-0",
+            "content": "{\r\n  \"name\": \"express-backend\",\r\n  \"version\": \"1.0.0\",\r\n  \"type\": \"module\",\r\n  \"scripts\": {\r\n    \"dev\": \"tsx watch src/server.ts\",\r\n    \"build\": \"tsc\",\r\n    \"start\": \"node dist/server.js\"\r\n  },\r\n  \"dependencies\": {\r\n    \"bcrypt\": \"^5.1.1\",\r\n    \"cloudinary\": \"^1.41.3\",\r\n    \"cors\": \"^2.8.5\",\r\n    \"dotenv\": \"^16.6.1\",\r\n    \"express\": \"^4.18.2\",\r\n    \"express-rate-limit\": \"^8.1.0\",\r\n    \"express-validator\": \"^7.2.1\",\r\n    \"helmet\": \"^8.1.0\",\r\n    \"jsonwebtoken\": \"^9.0.2\",\r\n    \"mongodb\": \"^6.20.0\",\r\n    \"mongoose\": \"^8.19.0\",\r\n    \"multer\": \"^2.0.2\",\r\n    \"multer-storage-cloudinary\": \"^4.0.0\",\r\n    \"qrcode\": \"^1.5.4\",\r\n    \"slugify\": \"^1.6.6\",\r\n    \"speakeasy\": \"^2.0.0\",\r\n    \"winston\": \"^3.18.3\",\r\n    \"@types/bcrypt\": \"^5.0.2\",\r\n    \"@types/cors\": \"^2.8.19\",\r\n    \"@types/express\": \"^4.17.21\",\r\n    \"@types/express-rate-limit\": \"^5.1.3\",\r\n    \"@types/jsonwebtoken\": \"^9.0.6\",\r\n    \"@types/multer\": \"^2.0.0\",\r\n    \"@types/node\": \"^20.11.0\",\r\n    \"@types/qrcode\": \"^1.5.5\",\r\n    \"@types/speakeasy\": \"^2.0.10\",\r\n    \"typescript\": \"^5.6.3\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"ts-node\": \"^10.9.2\",\r\n    \"tsx\": \"^4.20.6\"\r\n  }\r\n}\r\n"
+        }
+    ]
+}
