@@ -12,3 +12,22 @@ const storage = new CloudinaryStorage({
 });
 
 export const upload = multer({ storage });
+// 🟢 Upload cho bài viết (post)
+const postStorage = new CloudinaryStorage({
+  cloudinary,
+  params: async()=>({
+    folder: "posts",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    transformation: [{ quality: "auto", fetch_format: "auto" }],
+  }),
+});
+export const uploadPost = multer({ storage: postStorage });
+//banner
+const bannerStorage = new CloudinaryStorage({
+  cloudinary,
+  params: async () => ({
+    folder: "banners",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  }),
+});
+export const uploadBanner = multer({ storage: bannerStorage });

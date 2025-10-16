@@ -1,5 +1,5 @@
-// src/routes/post.routes.ts
 import { Router } from "express";
+import { uploadPost } from "../middlewares/upload.middleware.js";
 import {
   getAllPosts,
   getPostsByTopicSlug,
@@ -11,11 +11,15 @@ import {
 
 const router = Router();
 
-router.get("/", getAllPosts);                // ✅ Lấy tất cả
-router.get("/topic/:slug", getPostsByTopicSlug); // ✅ Lấy theo topic slug
-router.get("/:id", getPostById);             // ✅ Chi tiết post
-router.post("/", createPost);                // ✅ Tạo
-router.put("/:id", updatePost);              // ✅ Cập nhật
-router.delete("/:id", deletePost);           // ✅ Xóa
+// 🟢 Routes
+router.get("/", getAllPosts);
+router.get("/topic/:slug", getPostsByTopicSlug);
+router.get("/:id", getPostById);
+
+// ⚡ Upload 1 ảnh duy nhất (field name: "image")
+router.post("/", uploadPost.single("image"), createPost);
+router.put("/:id", uploadPost.single("image"), updatePost);
+
+router.delete("/:id", deletePost);
 
 export default router;

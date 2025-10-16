@@ -10,6 +10,7 @@ import authRoutes from "./routes/auth.routes.js";
 import topicRoutes from "./routes/topic.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import serviceRoutes from "./routes/service.routes.js";
+import bannerRoutes from "./routes/banner.routes.js";
 
 import seedAdmin from "./utils/seedAdmin.js";
 import logger from "./utils/logger.js";
@@ -18,58 +19,13 @@ dotenv.config();
 
 const app = express();
 
-const isDev = process.env.NODE_ENV !== "production";
-
-// Security middleware with relaxed CSP for dev to unblock asset loading
-const helmetConfig = isDev
-  ? { contentSecurityPolicy: false }
-  : {
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          scriptSrc: ["'self'"],
-          styleSrc: ["'self'", "'unsafe-inline'"],
-          imgSrc: [
-            "'self'",
-            "data:",
-            "https://res.cloudinary.com",
-            "https://scr.vn",
-            "https://openend.vn",
-            "https://www.citd.vn",
-            "https://cdn.tgdd.vn", // ✅ Cho phép ảnh từ TGDD
-            // ✅ Cho phép tất cả subdomain của tgdd.vn
-          ],
-          connectSrc: [
-            "'self'",
-            process.env.ADMIN_UI_ORIGIN || "http://localhost:3000",
-          ],
-          fontSrc: ["'self'"],
-          objectSrc: ["'none'"],
-          mediaSrc: ["'self'"],
-          frameSrc: ["'none'"],
-        },
-      },
-    };
-
-app.use(helmet(helmetConfig));
+// Security middleware
+app.use(helmet());
 
 // ✅ CORS cấu hình chuẩn cho frontend dùng withCredentials
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:3001", 
-  "http://127.0.0.1:3000",
-  "https://money-wise-fe.vercel.app", // ✅ Production frontend
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: process.env.ADMIN_UI_ORIGIN || "http://localhost:3000",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -91,6 +47,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/topics", topicRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/services", serviceRoutes);
+app.use("/api/banners", bannerRoutes);
 
 // ✅ Error handler có type rõ ràng
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
