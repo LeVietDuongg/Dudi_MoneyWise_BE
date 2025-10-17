@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1760201485066,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1760584336290,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n     \"start\": \"node dist/server.js\"\r\n   },\r\n   \"dependencies\": {\r\n     \"bcrypt\": \"^5.1.1\",\r\n-    \"cloudinary\": \"^1.41.3\",\r\n+    \"cloudinary\": \"^2.7.0\",\r\n     \"cors\": \"^2.8.5\",\r\n     \"dotenv\": \"^16.6.1\",\r\n     \"express\": \"^4.18.2\",\r\n     \"express-rate-limit\": \"^8.1.0\",\r\n"
                 }
             ],
             "date": 1760201485066,

@@ -11,6 +11,8 @@ import topicRoutes from "./routes/topic.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import serviceRoutes from "./routes/service.routes.js";
 import bannerRoutes from "./routes/banner.routes.js";
+import contactRoutes from "./routes/contact.routes.js";
+
 
 import seedAdmin from "./utils/seedAdmin.js";
 import logger from "./utils/logger.js";
@@ -18,9 +20,6 @@ import logger from "./utils/logger.js";
 dotenv.config();
 
 const app = express();
-
-// ✅ Trust proxy - Required for Render.com and other reverse proxies
-app.set('trust proxy', 1);
 
 // Security middleware
 app.use(helmet());
@@ -51,7 +50,7 @@ app.use("/api/topics", topicRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/banners", bannerRoutes);
-
+app.use("/api/contact", contactRoutes);
 // ✅ Error handler có type rõ ràng
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   logger.error("Unhandled error: " + (err.message || err));
