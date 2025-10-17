@@ -7,6 +7,9 @@
     "build": "tsc",
     "start": "node dist/server.js"
   },
+  "engines": {
+    "node": ">=18 <23"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.3",
