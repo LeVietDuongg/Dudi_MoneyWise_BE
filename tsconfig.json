@@ -5,6 +5,8 @@
     "target": "esnext",
     "module": "nodenext",
     "moduleResolution": "nodenext",
+    "lib": ["es2023"],
+    "types": ["node"],
     "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,
