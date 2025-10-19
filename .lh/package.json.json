@@ -3,20 +3,28 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 3,
             "patches": [
                 {
-                    "date": 1760201485066,
+                    "date": 1760858726251,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
                 },
                 {
-                    "date": 1760584336290,
-                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n     \"start\": \"node dist/server.js\"\r\n   },\r\n   \"dependencies\": {\r\n     \"bcrypt\": \"^5.1.1\",\r\n-    \"cloudinary\": \"^1.41.3\",\r\n+    \"cloudinary\": \"^2.7.0\",\r\n     \"cors\": \"^2.8.5\",\r\n     \"dotenv\": \"^16.6.1\",\r\n     \"express\": \"^4.18.2\",\r\n     \"express-rate-limit\": \"^8.1.0\",\r\n"
+                    "date": 1760858781262,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -41,5 +41,11 @@\n     \"@types/express-rate-limit\": \"^5.1.3\",\r\n     \"ts-node\": \"^10.9.2\",\r\n     \"tsx\": \"^4.20.6\"\r\n   }\r\n+  {\r\n+  \"engines\": {\r\n+    \"node\": \">=22.0.0\",\r\n+    \"npm\": \">=10.0.0\"\r\n+  }\r\n+}\r\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1760858838517,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -40,9 +40,10 @@\n   \"devDependencies\": {\r\n     \"@types/express-rate-limit\": \"^5.1.3\",\r\n     \"ts-node\": \"^10.9.2\",\r\n     \"tsx\": \"^4.20.6\"\r\n-  }\r\n+  },\r\n+\r\n   {\r\n   \"engines\": {\r\n     \"node\": \">=22.0.0\",\r\n     \"npm\": \">=10.0.0\"\r\n"
+                },
+                {
+                    "date": 1760858867272,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -41,12 +41,9 @@\n     \"@types/express-rate-limit\": \"^5.1.3\",\r\n     \"ts-node\": \"^10.9.2\",\r\n     \"tsx\": \"^4.20.6\"\r\n   },\r\n-\r\n-  {\r\n   \"engines\": {\r\n     \"node\": \">=22.0.0\",\r\n     \"npm\": \">=10.0.0\"\r\n   }\r\n-}\r\n }\n\\ No newline at end of file\n"
                 }
             ],
-            "date": 1760201485066,
+            "date": 1760858726251,
             "name": "Commit-0",
-            "content": "{\r\n  \"name\": \"express-backend\",\r\n  \"version\": \"1.0.0\",\r\n  \"type\": \"module\",\r\n  \"scripts\": {\r\n    \"dev\": \"tsx watch src/server.ts\",\r\n    \"build\": \"tsc\",\r\n    \"start\": \"node dist/server.js\"\r\n  },\r\n  \"dependencies\": {\r\n    \"bcrypt\": \"^5.1.1\",\r\n    \"cloudinary\": \"^1.41.3\",\r\n    \"cors\": \"^2.8.5\",\r\n    \"dotenv\": \"^16.6.1\",\r\n    \"express\": \"^4.18.2\",\r\n    \"express-rate-limit\": \"^8.1.0\",\r\n    \"express-validator\": \"^7.2.1\",\r\n    \"helmet\": \"^8.1.0\",\r\n    \"jsonwebtoken\": \"^9.0.2\",\r\n    \"mongodb\": \"^6.20.0\",\r\n    \"mongoose\": \"^8.19.0\",\r\n    \"multer\": \"^2.0.2\",\r\n    \"multer-storage-cloudinary\": \"^4.0.0\",\r\n    \"qrcode\": \"^1.5.4\",\r\n    \"slugify\": \"^1.6.6\",\r\n    \"speakeasy\": \"^2.0.0\",\r\n    \"winston\": \"^3.18.3\",\r\n    \"@types/bcrypt\": \"^5.0.2\",\r\n    \"@types/cors\": \"^2.8.19\",\r\n    \"@types/express\": \"^4.17.21\",\r\n    \"@types/express-rate-limit\": \"^5.1.3\",\r\n    \"@types/jsonwebtoken\": \"^9.0.6\",\r\n    \"@types/multer\": \"^2.0.0\",\r\n    \"@types/node\": \"^20.11.0\",\r\n    \"@types/qrcode\": \"^1.5.5\",\r\n    \"@types/speakeasy\": \"^2.0.10\",\r\n    \"typescript\": \"^5.6.3\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"ts-node\": \"^10.9.2\",\r\n    \"tsx\": \"^4.20.6\"\r\n  }\r\n}\r\n"
+            "content": "{\r\n  \"name\": \"express-backend\",\r\n  \"version\": \"1.0.0\",\r\n  \"type\": \"module\",\r\n  \"scripts\": {\r\n    \"dev\": \"tsx watch src/server.ts\",\r\n    \"build\": \"tsc\",\r\n    \"start\": \"node dist/server.js\"\r\n  },\r\n  \"dependencies\": {\r\n    \"bcrypt\": \"^5.1.1\",\r\n    \"cloudinary\": \"^1.41.3\",\r\n    \"cors\": \"^2.8.5\",\r\n    \"dotenv\": \"^16.6.1\",\r\n    \"express\": \"^4.18.2\",\r\n    \"express-rate-limit\": \"^8.1.0\",\r\n    \"express-validator\": \"^7.2.1\",\r\n    \"helmet\": \"^8.1.0\",\r\n    \"jsonwebtoken\": \"^9.0.2\",\r\n    \"mongodb\": \"^6.20.0\",\r\n    \"mongoose\": \"^8.19.0\",\r\n    \"multer\": \"^2.0.2\",\r\n    \"multer-storage-cloudinary\": \"^4.0.0\",\r\n    \"nodemailer\": \"^7.0.9\",\r\n    \"qrcode\": \"^1.5.4\",\r\n    \"slugify\": \"^1.6.6\",\r\n    \"speakeasy\": \"^2.0.0\",\r\n    \"winston\": \"^3.18.3\",\r\n    \"@types/bcrypt\": \"^5.0.2\",\r\n    \"@types/cors\": \"^2.8.19\",\r\n    \"@types/express\": \"^4.17.21\",\r\n    \"@types/jsonwebtoken\": \"^9.0.6\",\r\n    \"@types/multer\": \"^2.0.0\",\r\n    \"@types/node\": \"^20.11.0\",\r\n    \"@types/nodemailer\": \"^7.0.2\",\r\n    \"@types/qrcode\": \"^1.5.5\",\r\n    \"@types/speakeasy\": \"^2.0.10\",\r\n    \"typescript\": \"^5.6.3\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"@types/express-rate-limit\": \"^5.1.3\",\r\n    \"ts-node\": \"^10.9.2\",\r\n    \"tsx\": \"^4.20.6\"\r\n  }\r\n}"
         }
     ]
 }
