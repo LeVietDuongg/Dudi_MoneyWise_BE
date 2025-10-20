@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/models/Post.model.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1760927596934,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1760927596934,
+            "name": "Commit-0",
+            "content": "import mongoose, { Schema, Document } from \"mongoose\";\r\n\r\nexport interface IPost extends Document {\r\n  topic: mongoose.Types.ObjectId;\r\n  title: string;\r\n  excerpt: string;\r\n  author: string;\r\n  type: \"image\" | \"video\";\r\n  image?: string;\r\n  videoUrl?: string;\r\n  content?: string;\r\n  contentBeforeVideo?: string;\r\n  contentAfterVideo?: string;\r\n  getImageUrl(): string; // ✅ Method to get image URL with fallback\r\n}\r\n\r\nconst PostSchema = new Schema<IPost>(\r\n  {\r\n    topic: { type: Schema.Types.ObjectId, ref: \"Topic\", required: true },\r\n    title: { type: String, required: true },\r\n    excerpt: { type: String },\r\n    author: { type: String, required: true },\r\n    type: { type: String, enum: [\"image\", \"video\"], required: true },\r\n    image: { type: String },\r\n    videoUrl: { type: String },\r\n    content: { type: String },\r\n    contentBeforeVideo: { type: String },\r\n    contentAfterVideo: { type: String },\r\n  },\r\n  { timestamps: true }\r\n);\r\n\r\n// ✅ Helper function to extract YouTube video ID\r\nfunction getYouTubeVideoId(url: string): string | null {\r\n  if (!url) return null;\r\n  \r\n  // Support various YouTube URL formats\r\n  const patterns = [\r\n    /(?:youtube\\.com\\/watch\\?v=|youtu\\.be\\/|youtube\\.com\\/embed\\/)([a-zA-Z0-9_-]{11})/,\r\n    /youtube\\.com\\/watch\\?.*v=([a-zA-Z0-9_-]{11})/\r\n  ];\r\n  \r\n  for (const pattern of patterns) {\r\n    const match = url.match(pattern);\r\n    if (match) return match[1];\r\n  }\r\n  \r\n  return null;\r\n}\r\n\r\n// ✅ Method to get image URL with automatic fallback\r\nPostSchema.methods.getImageUrl = function(): string {\r\n  // If image exists, return it\r\n  if (this.image) {\r\n    return this.image;\r\n  }\r\n  \r\n  // If video type and has videoUrl, try to extract YouTube thumbnail\r\n  if (this.type === 'video' && this.videoUrl) {\r\n    const videoId = getYouTubeVideoId(this.videoUrl);\r\n    if (videoId) {\r\n      // Return high quality YouTube thumbnail\r\n      return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;\r\n    }\r\n  }\r\n  \r\n  // Fallback to default placeholder image\r\n  return 'https://res.cloudinary.com/djc6y1uij/image/upload/v1/default-post-thumbnail.jpg';\r\n};\r\n\r\n// ✅ Transform JSON output to always include imageUrl\r\nPostSchema.set('toJSON', {\r\n  transform: function(doc, ret: any) {\r\n    ret.imageUrl = doc.getImageUrl();\r\n    return ret;\r\n  }\r\n});\r\n\r\nexport const Post = mongoose.model<IPost>(\"Post\", PostSchema);\r\n"
+        }
+    ]
+}

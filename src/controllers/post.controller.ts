@@ -6,7 +6,12 @@ import { Topic } from "../models/Topic.model.js";
 export const getAllPosts = async (req: Request, res: Response) => {
   try {
     const posts = await Post.find().populate("topic");
-    res.json({ success: true, posts });
+    // ✅ Map to ensure imageUrl is included
+    const postsWithImages = posts.map(post => {
+      const postObj = post.toJSON();
+      return postObj;
+    });
+    res.json({ success: true, posts: postsWithImages });
   } catch (err) {
     console.error("❌ getAllPosts:", err);
     res.status(500).json({ success: false, message: "Server error" });
@@ -22,7 +27,9 @@ export const getPostsByTopicSlug = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: "Topic not found" });
 
     const posts = await Post.find({ topic: topic._id }).populate("topic");
-    res.json({ success: true, posts });
+    // ✅ Map to ensure imageUrl is included
+    const postsWithImages = posts.map(post => post.toJSON());
+    res.json({ success: true, posts: postsWithImages });
   } catch (err) {
     console.error("❌ getPostsByTopicSlug:", err);
     res.status(500).json({ success: false, message: "Server error" });
@@ -36,7 +43,8 @@ export const getPostById = async (req: Request, res: Response) => {
     if (!post)
       return res.status(404).json({ success: false, message: "Post not found" });
 
-    res.json({ success: true, post });
+    // ✅ Return with imageUrl included
+    res.json({ success: true, post: post.toJSON() });
   } catch (err) {
     console.error("❌ getPostById:", err);
     res.status(500).json({ success: false, message: "Server error" });
@@ -80,7 +88,8 @@ export const createPost = async (req: Request, res: Response) => {
       contentAfterVideo,
     });
 
-    res.status(201).json({ success: true, post });
+    // ✅ Return with imageUrl included
+    res.status(201).json({ success: true, post: post.toJSON() });
   } catch (err: any) {
     console.error("❌ createPost Error:", err.message);
     res.status(500).json({
@@ -105,7 +114,8 @@ export const updatePost = async (req: Request, res: Response) => {
     if (!updated)
       return res.status(404).json({ success: false, message: "Post not found" });
 
-    res.json({ success: true, post: updated });
+    // ✅ Return with imageUrl included
+    res.json({ success: true, post: updated.toJSON() });
   } catch (err: any) {
     console.error("❌ updatePost:", err.message);
     res.status(500).json({ success: false, message: "Cannot update post" });
